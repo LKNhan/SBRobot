@@ -1,0 +1,78 @@
+/*
+This program is only for controling the speed of the Left motor
+This is to test out the idea of spinning the motor without 
+stopping the program.
+
+1. Setup neccesary pin state
+2. Setup TimeOne
+3. Config PWM 
+4. Control PWM by bluetooth
+5. Average frequency
+
+*/
+#include <Arduino.h>
+#include <TimerOne.h>
+
+
+int Lmotor_step = 9;
+int Lmotor_dir = 8;
+int Rmotor_step = 10;
+int Rmotor_dir = 7;
+int ms1 = 4;
+int ms2 = 3;
+int ms3 = 11;
+unsigned long period = 1000;
+unsigned long count = 0;
+unsigned long current_time;
+unsigned long previous_time;
+unsigned long total_time = 0;
+
+
+String message;
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(Lmotor_step, OUTPUT);
+  pinMode(Lmotor_dir, OUTPUT);
+  pinMode(Rmotor_step, OUTPUT);
+  pinMode(Rmotor_dir, OUTPUT);
+  pinMode(ms1, OUTPUT);
+  pinMode(ms2, OUTPUT);
+  pinMode(ms3, OUTPUT);
+
+  Serial.begin(9600);
+
+  digitalWrite(Lmotor_dir, LOW);
+  digitalWrite(Rmotor_dir, LOW);
+  digitalWrite(ms1, HIGH);
+  digitalWrite(ms2, HIGH);
+  digitalWrite(ms3, HIGH);
+
+  Timer1.initialize(10000);
+  Timer1.pwm(Lmotor_step, 512, period);
+  Timer1.pwm(Rmotor_step, 512, period);
+}
+
+void loop() {
+  current_time = micros();
+  total_time += current_time - previous_time;
+  previous_time = micros();
+  
+  if (count >= 10000){
+    Serial.println(((double)total_time/(count)));
+    total_time = 0;
+    count = 0;
+  }
+
+  if (Serial.available()){
+    char character_read = Serial.read();
+    if (character_read == 'n'){
+      period = message.toInt();
+      message = "";
+      Timer1.pwm(Lmotor_step, 512, period);
+      Timer1.pwm(Rmotor_step, 512, period);
+    } else {
+      message += character_read;
+    }
+  } 
+}
+

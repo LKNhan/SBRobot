@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../../Onedrive/Desktop/Documents/CodingPractice"
+		},
+		{
+			"name": "SBRobot",
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"ostream": "cpp",
+			"control.h": "c",
+			"stdio.h": "c"
+		}
+	}
+}

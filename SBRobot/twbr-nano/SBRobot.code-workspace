@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../SBRobot"
+		},
+		{
+			"name": "twbr-nano",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
